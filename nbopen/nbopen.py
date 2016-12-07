@@ -42,10 +42,22 @@ def nbopen(filename):
                                         open_browser=True,
                                         argv=[],  # Avoid it seeing our own argv
                                        )
+# Unicode conversion from https://codereview.stackexchange.com/a/124440
+try:
+    unicode
+except NameError:
+    # Define `unicode` for Python3
+    def unicode(s, *_):
+        return s
+
+
+def to_unicode(s):
+    return unicode(s, "utf-8")
+
 
 def main(argv=None):
     ap = argparse.ArgumentParser()
-    ap.add_argument('filename', help='The notebook file to open')
+    ap.add_argument('filename', help='The notebook file to open', type=to_unicode)
     
     args = ap.parse_args(argv)
 
